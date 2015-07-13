@@ -92,7 +92,6 @@ def account(username):
 def create_account(username):
     account = Account()
     account.owner = username
-    account.player.name = username
     account.bankaccount = BankAccount()
     # and save it for the future!
     key = account.put()
