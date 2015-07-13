@@ -109,7 +109,8 @@ def create_account(username):
     # and save it for the future!
     key = account.put()
     return account
-    
+
+
 @app.route('/bankaccount/<username>')
 def bankaccount(username):
     """Return the matching business resource"""
@@ -138,10 +139,10 @@ def business(businessname):
 @app.route('/product/<productname>')
 def physical_products(productname):
     """Return the matching product resource"""
-    Physical_products = {}
-    Physical_products['name'] = productname
-    Physical_products['price'] = 0.5
-    return str(Physical_products)
+    physical_products = {}
+    physical_products['name'] = productname
+    physical_products['price'] = 0.5
+    return str(physical_products)
 
 @app.errorhandler(404)
 def page_not_found(e):
