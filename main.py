@@ -28,14 +28,8 @@ def account_key(account_name):
     return ndb.Key('Account', account_name)
 
 
-class Player(ndb.Model):
-    """Sub model for representing a player."""
-    identity = ndb.StringProperty(indexed=False)
-    email = ndb.StringProperty(indexed=False)
-
-
 class BankAccount(ndb.Model):
-    """Sub model for representing a player."""
+    """Sub model for representing a bank account."""
     name = ndb.StringProperty(indexed=False)
     balance = ndb.StringProperty(indexed=False)
 
@@ -43,7 +37,6 @@ class Account(ndb.Model):
     """A main model for representing an individual Account entry."""
     owner = ndb.StringProperty(indexed=True)
     usage = ndb.IntegerProperty(indexed=False, default=0)
-    player = ndb.StructuredProperty(Player)
     bankaccount = ndb.StructuredProperty(BankAccount)
     #content = ndb.StringProperty(indexed=False)
     #date = ndb.DateTimeProperty(auto_now_add=True)
@@ -79,13 +72,8 @@ def account(username):
         account = create_account(username)
     else:
         """Return the matching account resource"""
-           
-        # Ancestor Queries, as shown here, are strongly consistent
-        # with the High Replication Datastore. Queries that span
-        # entity groups are eventually consistent. If we omitted the
-        # ancestor from this query there would be a slight chance that
-        # Account that had just been written would not show up in a
-        # query.
+
+        # TODO: something about ancestor queries for consistency
         account_query = Account.query(Account.owner == username)
         accounts = account_query.fetch(1)
 
@@ -104,7 +92,7 @@ def account(username):
 def create_account(username):
     account = Account()
     account.owner = username
-    account.player = Player()
+    account.player.name = username
     account.bankaccount = BankAccount()
     # and save it for the future!
     key = account.put()
